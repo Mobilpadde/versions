@@ -1,5 +1,7 @@
 # Versions
 
+[![Build Status](https://travis-ci.org/Mobilpadde/versions.svg?branch=master)](https://travis-ci.org/Mobilpadde/versions)
+
 ### A tool to generate a simple version-lapse (timelapse) for a front-end in a repo (git repository)
 
 ## Why

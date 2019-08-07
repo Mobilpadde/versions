@@ -2,6 +2,7 @@ package gif
 
 import (
 	"fmt"
+
 	"versions/logs"
 
 	"gopkg.in/gographics/imagick.v3/imagick"

@@ -32,7 +32,7 @@ before_install:
   - git tag -l "$VERSION" || git tag "$VERSION"
 
 script:
-  - go build . -o versions-$VERSION-$NAME
+  - go build -o versions-$VERSION-$NAME .
 
 deploy:
   provider: releases
