@@ -24,13 +24,15 @@ func DrawAll(path string, logs []logs.Log) {
 
 		dw := imagick.NewDrawingWand()
 		defer dw.Destroy()
+
+		dw.SetFont("monospace")
 		dw.SetFontSize(24)
 
 		pw.SetColor("black")
 		dw.SetStrokeColor(pw)
 		dw.SetStrokeWidth(5)
 
-		text := fmt.Sprintf("%s (%s)", l.Title, l.SHA1[:5])
+		text := fmt.Sprintf("[%s]: %s", l.SHA1[:5], l.Title)
 		dw.Annotation(25, 25+24/2, text)
 
 		dw.SetStrokeWidth(0)

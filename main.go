@@ -17,35 +17,39 @@ import (
 )
 
 func main() {
-	var path string
+	var repo string
+	var dump string
+	var out string
 	var port int
 	var wait int
 	var commits int
 
-	flag.StringVar(&path, "path", "", "the path of a git-repo")
+	flag.StringVar(&repo, "repo", "", "the path of a git-repo")
+	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
+	flag.StringVar(&out, "out", "./out.gif", "the path of the generated gif")
 	flag.IntVar(&port, "port", 5000, "port of app")
 	flag.IntVar(&wait, "wait", 5, "how long to wait before screendumping")
 	flag.IntVar(&commits, "commits", 0, "how many commits to dump")
 
 	flag.Parse()
 
-	if path == "" {
+	if repo == "" {
 		log.Fatalln(errors.New("please enter a path of a git-repo").Error())
 	}
 
-	if err := exists(path); err != nil {
+	if err := exists(repo); err != nil {
 		log.Fatalln(err.Error())
 	}
 
-	os.RemoveAll("./screendumps")
-	os.RemoveAll("./out.gif")
+	os.RemoveAll(dump)
+	os.RemoveAll(out)
 
-	os.Mkdir("./screendumps", 0777)
+	os.Mkdir(dump, 0777)
 
 	shooter := shoot.New()
 	defer shooter.Close()
 
-	logsData := logs.GetLogs(path)
+	logsData := logs.GetLogs(repo)
 	if commits > 0 {
 		logsData = logsData[:commits]
 	}
@@ -65,29 +69,29 @@ func main() {
 		}
 	}(port, commits, logsData)
 
-	defer git.ChangeCommit(path, "master")
+	defer git.ChangeCommit(repo, "master")
 	for i, l := range logsData {
 		time.Sleep(time.Second * time.Duration(wait))
 
 		log.Printf("Checking out: %s (%s)", l.Title, string(l.SHA1[:5]))
-		git.ChangeCommit(path, l.SHA1)
+		git.ChangeCommit(repo, l.SHA1)
 
-		d := execute.Command(true, "yarn", path, []string{})
+		d := execute.Command(true, "yarn", repo, []string{})
 		d.Run()
 		d.Wait()
 
-		s := execute.Command(true, "yarn", path, []string{"PORT=" + strconv.Itoa(port)}, "dev")
+		s := execute.Command(true, "yarn", repo, []string{"PORT=" + strconv.Itoa(port)}, "dev")
 		s.Start()
 
 		time.Sleep(time.Second * time.Duration(wait))
-		shoot.Shoot(fmt.Sprintf("http://localhost:%d", port), "./screendumps", fmt.Sprintf("%d_%s", i, l.SHA1), wait)
+		shoot.Shoot(fmt.Sprintf("http://localhost:%d", port), dump, fmt.Sprintf("%d_%s", i, l.SHA1), wait)
 
 		s.Process.Kill()
 		port++
 	}
 
-	gif.DrawAll("./screendumps", logsData)
-	gif.Make("./screendumps", logsData)
+	gif.DrawAll(dump, logsData)
+	gif.Make(dump, out, logsData)
 }
 
 func exists(path string) error {
