@@ -20,6 +20,7 @@ func main() {
 	var repo string
 	var dump string
 	var out string
+	var cmd string
 	var port int
 	var wait int
 	var commits int
@@ -27,6 +28,7 @@ func main() {
 	flag.StringVar(&repo, "repo", "", "the path of a git-repo")
 	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
 	flag.StringVar(&out, "out", "./out.gif", "the path of the generated gif")
+	flag.StringVar(&cmd, "cmd", "dev", "the yarn-command used to run the dev-server")
 	flag.IntVar(&port, "port", 5000, "port of app")
 	flag.IntVar(&wait, "wait", 5, "how long to wait before screendumping")
 	flag.IntVar(&commits, "commits", 0, "how many commits to dump")
@@ -80,7 +82,7 @@ func main() {
 		d.Run()
 		d.Wait()
 
-		s := execute.Command(true, "yarn", repo, []string{"PORT=" + strconv.Itoa(port)}, "dev")
+		s := execute.Command(true, "yarn", repo, []string{"PORT=" + strconv.Itoa(port)}, cmd)
 		s.Start()
 
 		time.Sleep(time.Second * time.Duration(wait))

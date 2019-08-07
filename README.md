@@ -42,6 +42,9 @@ Useful:
  * `-out`
    * defaults to `./out.gif`, is the path and name to place the generated gif.
 
+ * `-cmd`
+   * defaults to `dev`, is the name of the `package.json`-script to run a `dev-server`.
+
  * `-commits`
    * defaults to `0`, meaning all the commits. 
 
@@ -55,7 +58,7 @@ Useful:
 
 ## Post Scriptum
 
-Only works with `yarn` and a `dev`-script in your `package.json`.
+Only works with `yarn` at the moment.
 
 If the program crashes at any point, you'd `git checkout master` on the repo specified. The program **will** try to clean up after itself, but might fail at times.
 
