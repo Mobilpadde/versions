@@ -9,22 +9,35 @@ import (
 )
 
 // Command makes it possible to execute a command
-func Command(redirect bool, command, dir string, env []string, vars ...string) *exec.Cmd {
+func Command(verbose bool, command, dir string, env []string, vars ...string) *exec.Cmd {
 	cmd := exec.Command(command, vars...)
 	cmd.Dir = dir
 	cmd.Env = append(cmd.Env, env...)
 
-	if redirect {
-		reader, err := cmd.StdoutPipe()
+	if verbose {
+		outReader, err := cmd.StdoutPipe()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
 			return nil
 		}
 
-		scanner := bufio.NewScanner(reader)
+		outScanner := bufio.NewScanner(outReader)
 		go func() {
-			for scanner.Scan() {
-				log.Printf("\t > %s\n", scanner.Text())
+			for outScanner.Scan() {
+				log.Printf("\t > %s\n", outScanner.Text())
+			}
+		}()
+
+		errReader, err := cmd.StderrPipe()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
+			return nil
+		}
+
+		errScanner := bufio.NewScanner(errReader)
+		go func() {
+			for errScanner.Scan() {
+				log.Printf("\t > %s\n", errScanner.Text())
 			}
 		}()
 	}

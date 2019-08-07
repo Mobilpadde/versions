@@ -24,6 +24,8 @@ func main() {
 	var port int
 	var wait int
 	var commits int
+	var verbose bool
+	var verboser bool
 
 	flag.StringVar(&repo, "repo", "", "the path of a git-repo")
 	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
@@ -32,6 +34,9 @@ func main() {
 	flag.IntVar(&port, "port", 5000, "port of app")
 	flag.IntVar(&wait, "wait", 5, "how long to wait before screendumping")
 	flag.IntVar(&commits, "commits", 0, "how many commits to dump")
+
+	flag.BoolVar(&verbose, "v", false, "log yarn-commands")
+	flag.BoolVar(&verboser, "vvv", false, "all the logs")
 
 	flag.Parse()
 
@@ -48,7 +53,7 @@ func main() {
 
 	os.Mkdir(dump, 0777)
 
-	shooter := shoot.New()
+	shooter := shoot.New(verboser)
 	defer shooter.Close()
 
 	logsData := logs.GetLogs(repo)
@@ -65,7 +70,7 @@ func main() {
 
 		dir, _ := os.Getwd()
 		for i := range logsData {
-			k := execute.Command(false, "make", dir, []string{}, "PORT="+strconv.Itoa(port-i), "-i", "kill")
+			k := execute.Command(verboser, "make", dir, []string{}, "PORT="+strconv.Itoa(port-i), "-i", "kill")
 			k.Run()
 			k.Wait()
 		}
@@ -75,14 +80,14 @@ func main() {
 	for i, l := range logsData {
 		time.Sleep(time.Second * time.Duration(wait))
 
-		log.Printf("Checking out: [%s]: %s", string(l.SHA1[:5]), l.Title)
+		log.Printf("Checking out: [%s]: %s", l.SHA1, l.Title)
 		git.ChangeCommit(repo, l.SHA1)
 
-		d := execute.Command(true, "yarn", repo, []string{})
+		d := execute.Command(verbose || verboser, "yarn", repo, []string{})
 		d.Run()
 		d.Wait()
 
-		s := execute.Command(true, "yarn", repo, []string{"PORT=" + strconv.Itoa(port)}, cmd)
+		s := execute.Command(verbose || verboser, "yarn", repo, []string{"PORT=" + strconv.Itoa(port)}, cmd)
 		s.Start()
 
 		time.Sleep(time.Second * time.Duration(wait))

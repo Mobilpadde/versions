@@ -25,5 +25,6 @@ func Make(dumps, outPath string, logs []logs.Log) {
 
 	f, _ := os.OpenFile(outPath, os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
+
 	gif.EncodeAll(f, out)
 }

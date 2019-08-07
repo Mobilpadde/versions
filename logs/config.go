@@ -14,9 +14,9 @@ type Log struct {
 
 // GetLogs gets logs from path
 func GetLogs(path string) []Log {
-	logSlice := strings.Split(git.GetLogs(path), "\n")
-	logSlice = logSlice[:len(logSlice)-1]
-	logs := parseLogs(logSlice)
+	split := strings.Split(git.GetLogs(path), "\n\n")
+	split = split[:len(split)-1]
+	logs := parseLogs(split)
 
 	return logs
 }
@@ -25,7 +25,7 @@ func parseLogs(logSlice []string) []Log {
 	logs := make([]Log, 0)
 
 	for _, s := range logSlice {
-		split := strings.SplitN(s, " ", 2)
+		split := strings.Split(s, "\n")
 		logs = append(logs, Log{
 			SHA1:  split[0],
 			Title: split[1],

@@ -33,7 +33,7 @@ func DrawAll(path string, logs []logs.Log) {
 		dw.SetStrokeColor(pw)
 		dw.SetStrokeWidth(5)
 
-		text := fmt.Sprintf("[%s]: %s", l.SHA1[:5], l.Title)
+		text := fmt.Sprintf("[%s]: %s", l.SHA1, l.Title)
 		dw.Annotation(25, 25+24/2, text)
 
 		dw.SetStrokeWidth(0)

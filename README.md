@@ -56,6 +56,15 @@ Useful:
    * This adds up to `5 + 5 + 1 = 11` seconds for each commit to process.
    * Or `55` seconds - about a minute - to run through `5` commits.
 
+Debugging:
+
+ * `-v`
+   * defaults to `false`, logs the yarn-commands - useful for figuring out how much the `-wait` should be.
+
+ * `-vvv`
+   * defaults to `false`, log most things.
+
+
 ## Post Scriptum
 
 Only works with `yarn` at the moment.

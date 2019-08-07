@@ -2,6 +2,7 @@ package shoot
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 	"time"
 
@@ -14,8 +15,8 @@ type Shooter struct {
 	chrome *exec.Cmd
 }
 
-func New() *Shooter {
-	chrome := execute.Command(false, "chromium", "", []string{}, "--remote-debugging-port=9222")
+func New(verboser bool) *Shooter {
+	chrome := execute.Command(verboser, "chromium", "", []string{}, "--remote-debugging-port=9222")
 	chrome.Start()
 
 	return &Shooter{
@@ -28,10 +29,12 @@ func (s *Shooter) Close() {
 }
 
 func Shoot(uri, path, sha1 string, wait int) {
-	remote, _ := godet.Connect("localhost:9222", false)
-	defer remote.Close()
+	remote, err := godet.Connect("localhost:9222", false)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
-	remote.SetVisibleSize(1920, 1750)
+	defer remote.Close()
 
 	tab, _ := remote.NewTab(uri)
 	defer remote.CloseTab(tab)

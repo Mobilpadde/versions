@@ -7,7 +7,7 @@ import (
 )
 
 func GetLogs(path string) string {
-	cmd := execute.Command(false, "git", path, []string{}, "--no-pager", "log", "--pretty=oneline")
+	cmd := execute.Command(false, "git", path, []string{}, "--no-pager", "log", `--pretty=%h%n%s%n`)
 
 	logs, err := cmd.Output()
 	if err != nil {
