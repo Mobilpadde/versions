@@ -31,7 +31,13 @@ env:
 addons:
   apt:
     packages:
-      - libmagickcore-dev
+      - graphicsmagick-libmagick-dev-compat
+    update: true
+
+  homebrew:
+    packages:
+     - imagemagick
+    update: true
 
 before_install:
   - git tag -l "$VERSION" || git tag "$VERSION"
