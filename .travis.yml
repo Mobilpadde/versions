@@ -23,7 +23,8 @@ matrix:
 
     - os: windows
       env:
-        - NAME=win
+        - NAME=win.exe
+        - PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 env:
   - GO111MODULE=on
   - VERSION=$(date +'%Y-%m-%d-%H')
@@ -31,7 +32,7 @@ env:
 addons:
   apt:
     packages:
-      - graphicsmagick-libmagick-dev-compat
+      - build-essential
     update: true
 
   homebrew:
@@ -41,6 +42,19 @@ addons:
 
 before_install:
   - git tag -l "$VERSION" || git tag "$VERSION"
+
+  - |
+      if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
+        wget https://www.imagemagick.org/download/ImageMagick.tar.gz
+        tar xvzf ImageMagick.tar.gz
+        cd ImageMagick-7.0.8-26/
+        ./configure
+        make
+        sudo make install
+        sudo ldconfig /usr/local/lib
+      else
+        choco install imagemagick
+      fi
 
 script:
   - GO111MODULE=on go build -o versions-$VERSION-$NAME .
