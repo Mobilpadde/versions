@@ -28,6 +28,11 @@ env:
   - GO111MODULE=on
   - VERSION=$(date +'%Y-%m-%d-%H')
 
+addons:
+  apt:
+    packages:
+      - imagemagick
+
 before_install:
   - git tag -l "$VERSION" || git tag "$VERSION"
 
