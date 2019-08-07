@@ -26,37 +26,28 @@ matrix:
         - NAME=win.exe
         - PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 env:
-  - GO111MODULE=on
-  - VERSION=$(date +'%Y-%m-%d-%H')
+  
 
 addons:
   apt:
     packages:
-      - build-essential
-    update: true
+      - imagemagick
 
   homebrew:
     packages:
      - imagemagick
-    update: true
 
 before_install:
   - git tag -l "$VERSION" || git tag "$VERSION"
 
   - |
-      if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
-        wget https://www.imagemagick.org/download/ImageMagick.tar.gz
-        tar xvzf ImageMagick.tar.gz
-        cd ImageMagick-7.0.8-26/
-        ./configure
-        make
-        sudo make install
-        sudo ldconfig /usr/local/lib
-      else
+      if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
         choco install imagemagick
+        choco install pkgconfiglite
       fi
 
 script:
+  - export VERSION=$(date +'%Y-%m-%d-%H')
   - GO111MODULE=on go build -o versions-$VERSION-$NAME .
 
 deploy:
