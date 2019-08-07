@@ -1,0 +1,43 @@
+language: go
+
+go:
+  - 1.11.x
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - "./back"
+
+matrix:
+  include:
+    - os: linux
+      env:
+        - NAME=linux
+
+    - os: osx
+      env:
+        - NAME=osx
+
+    - os: windows
+      env:
+        - NAME=win
+env:
+  - GO111MODULE=on
+  - VERSION=$(date +'%Y-%m-%d-%H')
+
+before_install:
+  - git tag -l "$VERSION" || git tag "$VERSION"
+
+script:
+  - go build . -o versions-$VERSION-$NAME
+
+deploy:
+  provider: releases
+  api_key:
+    secure: HFtfyd1IaaOsIgZKgghmfPMCbmJLUL3t2AwIzLUZ7stsDqJYk1m08pQrwbIStrrMHsnTi/R+fku9pJ87IEKMpG3DJsgRRzD+I9/lWMyxyI5OR/am4vmMUslmvs6TRcV0z9zKvmzDfUsF2cYn1pBL6G3XUGSVQXaQnt+hvuFB3WYtfwZ898hKVvHa7W32dQuxF/dN/HcvIBz+XzBt8Be3zTYrc8AZjITDoTgE4FPuwak+AdImwD32iOS9EWr8/iP/ELEXoWAxnjBIAQ8KZ9WPwGW7sprbQHWg1SL/byV3+xTftfX+MJ4PLJhEQJcUc2dwVJv4zQYZ85XAiOCMSSl/oNvXWiQBgizD2hrx9PjAoVsdXfEiE3bbyALywm119tltQsXo75XurDuiYBeJ3hb/awg1rpnyRgMkInEMEme/dVTvDVnYPfDdsHdflR8uU2Np45tHEieXZR4ydtFnVkcNISUveXhjIF0BKxPfIL4qeneSl0HAIvGhCipoNNw61NCcGSpZEG9GvqU+qpx3HAVGNfSv7c+gXdSqT0XmPzxfuEvxsqQo11IEIbZn9mDoc2EaY1BqPmDjPJ29NcYPTfO/eRYVauiXC/NxVqTWRkO2DNU1bMzVmBjTyMd6gxA1ZvOar1BmVbMATz0d4PcqPt5PyJPJa/nUfFNGafsMI1lPBG0=
+  file: versions-$VERISON-$NAME
+  on:
+    repo: Mobilpadde/versions

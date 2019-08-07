@@ -73,7 +73,7 @@ func main() {
 	for i, l := range logsData {
 		time.Sleep(time.Second * time.Duration(wait))
 
-		log.Printf("Checking out: %s (%s)", l.Title, string(l.SHA1[:5]))
+		log.Printf("Checking out: [%s]: %s", string(l.SHA1[:5]), l.Title)
 		git.ChangeCommit(repo, l.SHA1)
 
 		d := execute.Command(true, "yarn", repo, []string{})
