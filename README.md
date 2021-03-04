@@ -14,13 +14,14 @@ I always think it's fun to look at the progess of any project that I - or others
 
 Explained in simple words: It makes a version-lapse of a repo.
 
-Please checkout the gif below to see my example of this.
+Please checkout the webp below to see my example of this.
 
-![A version-lapse of https://github.com/Mobilpadde/versions-test](sample/index.gif)
+![A .webp version-lapse of https://github.com/Mobilpadde/versions-test](sample/index.webp)
 
 <details>
-
 <summary>An **older** version of Versions was used to generate the below</summary><p>
+
+![A version-lapse of https://github.com/Mobilpadde/versions-test](sample/index.gif)
 
 ![https://voters.cafe version-lapse of five commits](sample/out.gif)
 
@@ -29,15 +30,13 @@ Please checkout the gif below to see my example of this.
 
 ## How
 
-It's quite simple to use. I promise! Download the source-code of this repo. Fire up a terminal and type in `go run . -repo ../path/to/git/repo -commits 5 -wait 5 -port 5000`, this will make a version-lapse of of the last `5 commits` of the repo `../path/to/git/repo`. It starts a dev-server for each commit - on port `5000`, waits `5 seconds`, takes a screendump, closes the dev-server and annotates the image. Lastly it makes the `5 commits` into a gif. Easy peasy!
+It's quite simple to use. I promise! Download the source-code of this repo. Fire up a terminal and type in `go run . -repo ../path/to/git/repo -commits 5 -wait 5 -port 5000`, this will make a version-lapse of of the last `5 commits` of the repo `../path/to/git/repo`. It starts a dev-server for each commit - on port `5000`, waits `5 seconds`, takes a screendump, closes the dev-server and annotates the image. Lastly it makes the `5 commits` into a webp. Easy peasy!
 
 ## Usage
 
-First, make sure you have `ImageMagick <= 7.x` installed.
+First, have a `google-chrome-beta`-browser installed. (or cahnge the source code to specify another version of a chromium-based browser [here](shoot/config.go#L19))
 
-Second, have a `google-chrome-beta`-browser installed. (or cahnge the source code to specify another version of a chromium-based browser [here](shoot/config.go#L19))
-
-Third, and most importantly, have `go >= 1.11` installed - As I'm not yet providing native builds of this program.
+Second, and most importantly, have `go >= 1.11` installed - As I'm not yet providing native builds of this program.
 
 And, of course, `git` and a local repo.
 
@@ -55,7 +54,7 @@ Useful:
 
 -   `-out`
 
-    -   defaults to `./out`, is the path to place the generated gif(s).
+    -   defaults to `./out`, is the path to place the generated webp(s).
 
 -   `-manager`
 

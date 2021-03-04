@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
+	"versions/ani"
 	"versions/execute"
-	"versions/gif"
 	"versions/git"
 	"versions/logs"
 	"versions/shoot"
@@ -73,8 +73,9 @@ func main() {
 
 	shooter := shoot.New(verboser)
 	defer func() {
-		git.ChangeCommit(repo, "master")
-		git.ChangeCommit(repo, "main")
+		log.Println(git.ChangeCommit(repo, "master"))
+		log.Println(git.ChangeCommit(repo, "main"))
+		// git.ChangeCommit(repo, "main")
 	}()
 
 	pathsSplit := strings.Split(paths, ",")
@@ -117,8 +118,8 @@ func main() {
 
 		time.Sleep(time.Second)
 	}
-
 	shooter.Close()
+
 	for _, path := range pathsSplit {
 		if path == "" {
 			continue
@@ -126,12 +127,12 @@ func main() {
 
 		repPath := pathRe.ReplaceAllString(path, "")
 		dumpPath := dump + "/" + repPath
-		gif.DrawAll(dumpPath, path, logsData)
+		ani.DrawAll(dumpPath, path, logsData)
 
 		if repPath == "" {
 			repPath = "index"
 		}
-		gif.Make(dumpPath, out+"/"+repPath+".gif", logsData)
+		ani.Make(dumpPath, out+"/"+repPath+".webp", logsData)
 	}
 }
 
