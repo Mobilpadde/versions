@@ -3,4 +3,5 @@ out/
 .vscode/
 
 *.gif
+!sample/index.gif
 !sample/out.gif
