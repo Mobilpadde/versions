@@ -2,50 +2,55 @@ package gif
 
 import (
 	"fmt"
+	"log"
 
 	"versions/logs"
 
-	"gopkg.in/gographics/imagick.v3/imagick"
+	"github.com/fogleman/gg"
 )
 
-func DrawAll(path string, logs []logs.Log) {
-	imagick.Initialize()
-	defer imagick.Terminate()
-
-	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
-
-	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
-
+func DrawAll(path, uri string, logs []logs.Log) {
 	for i, l := range logs {
-		img := fmt.Sprintf("%s/%d_%s", path, i, l.SHA1)
-		in := img + ".png"
-		check(mw.ReadImage(in))
+		path := fmt.Sprintf("%s/%d_%s", path, i, l.SHA1)
+		in := path + ".png"
+		img, err := gg.LoadPNG(in)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
 
-		dw := imagick.NewDrawingWand()
-		defer dw.Destroy()
+		sz := img.Bounds().Size()
+		dc := gg.NewContext(sz.X, sz.Y)
+		dc.DrawImage(img, 0, 0)
 
-		dw.SetFont("monospace")
-		dw.SetFontSize(24)
+		if err := dc.LoadFontFace("./fonts/Oswald-Bold.ttf", 32); err != nil {
+			panic(err)
+		}
 
-		pw.SetColor("black")
-		dw.SetStrokeColor(pw)
-		dw.SetStrokeWidth(5)
+		pos := 25.0
+		dc.SetRGB(0, 0, 0)
 
-		text := fmt.Sprintf("[%s]: %s", l.SHA1, l.Title)
-		dw.Annotation(25, 25+24/2, text)
+		uriPath := ""
+		if uri != "" {
+			uriPath = fmt.Sprintf(" (%s)", uri)
+		}
+		s := fmt.Sprintf("[%s]: %s%s", l.SHA1, l.Title, uriPath)
+		n := 6 // "stroke" size
+		for dy := -n; dy <= n; dy++ {
+			for dx := -n; dx <= n; dx++ {
+				if dx*dx+dy*dy >= n*n {
+					// give it rounded corners
+					continue
+				}
+				x := pos + float64(dx)
+				y := pos + float64(dy)
+				dc.DrawStringAnchored(s, x, y, 0, 1)
+			}
+		}
 
-		dw.SetStrokeWidth(0)
+		dc.SetRGB(1, 1, 1)
+		dc.DrawStringAnchored(s, pos, pos, 0, 1)
 
-		pw.SetColor("white")
-		dw.SetFillColor(pw)
-		dw.SetTextAntialias(true)
-		dw.Annotation(25, 25+24/2, text)
-
-		check(mw.DrawImage(dw))
-
-		out := img + ".gif"
-		check(mw.WriteImage(out))
+		dc.SavePNG(path + ".gif")
 	}
 }
