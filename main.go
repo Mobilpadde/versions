@@ -72,19 +72,12 @@ func main() {
 	}
 
 	shooter := shoot.New(verboser)
-	defer func(port, commits int, logs []logs.Log) {
-		if commits <= 0 {
-			port = port + len(logs)
-		} else {
-			port = port + commits
-		}
-	}(port, commits, logsData)
-
 	defer git.ChangeCommit(repo, "master")
 
 	pathsSplit := strings.Split(paths, ",")
 	pathRe := regexp.MustCompile(`[^\w+]`)
 
+	execute.Command(verboser, "make", "./", []string{}, "PORT="+strconv.Itoa(port), "kill").Run()
 	for i, l := range logsData {
 		log.Printf("Checking out: [%s]: %s", l.SHA1, l.Title)
 		git.ChangeCommit(repo, l.SHA1)
@@ -92,7 +85,6 @@ func main() {
 		installs := strings.Split(installCmd, " ")
 		d := execute.Command(verbose || verboser, manager, repo, []string{}, installs...)
 		d.Run()
-		d.Wait()
 
 		cmds := strings.Split(cmd, " ")
 		s := execute.Command(verbose || verboser, manager, repo, []string{"PORT=" + strconv.Itoa(port)}, cmds...)
@@ -112,11 +104,15 @@ func main() {
 		}
 
 		s.Process.Kill()
-		k := execute.Command(verboser, "make", "./", []string{}, "PORT="+strconv.Itoa(port), "kill")
-		k.Run()
-		k.Wait()
+		s.Wait()
 
-		time.Sleep(time.Second * time.Duration(wait))
+		for i := 0; i < 2; i++ {
+			time.Sleep(time.Second)
+			k := execute.Command(verboser, "make", "./", []string{}, "PORT="+strconv.Itoa(port), "kill")
+			k.Run()
+		}
+
+		time.Sleep(time.Second)
 	}
 
 	shooter.Close()
@@ -132,7 +128,7 @@ func main() {
 		if repPath == "" {
 			repPath = "index"
 		}
-		gif.Make(dumpPath, out+"/"+repPath+".git", logsData)
+		gif.Make(dumpPath, out+"/"+repPath+".gif", logsData)
 	}
 }
 
