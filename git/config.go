@@ -11,7 +11,7 @@ func GetLogs(path string) string {
 
 	logs, err := cmd.Output()
 	if err != nil {
-		log.Panicln(err.Error())
+		log.Println(err.Error())
 	}
 
 	return string(logs)
@@ -22,7 +22,7 @@ func ChangeCommit(path, sha1 string) string {
 
 	logs, err := cmd.Output()
 	if err != nil {
-		log.Panicln(err.Error())
+		log.Println(err.Error())
 	}
 
 	return string(logs)

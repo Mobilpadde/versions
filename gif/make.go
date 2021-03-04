@@ -18,7 +18,9 @@ import (
 func Make(dumps, outPath string, logs []logs.Log) {
 	out := &gif.GIF{}
 
-	for i, l := range logs {
+	for i := len(logs) - 1; i >= 0; i-- {
+		l := logs[i]
+
 		path := fmt.Sprintf("%s/%d_%s.gif", dumps, i, l.SHA1)
 		f, err := os.Open(path)
 		if err != nil {

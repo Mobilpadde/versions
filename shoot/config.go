@@ -35,11 +35,13 @@ func Shoot(uri, path, sha1 string, wait int) {
 		return
 	}
 	defer remote.Close()
+	remote.SetCacheDisabled(true)
 
 	tab, _ := remote.NewTab(uri)
 	defer remote.CloseTab(tab)
 
 	time.Sleep(time.Second * 2)
+	remote.ClearBrowserCache()
 	remote.Reload()
 	time.Sleep(time.Second * 2)
 

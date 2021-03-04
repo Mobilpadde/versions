@@ -40,7 +40,7 @@ func main() {
 	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
 	flag.StringVar(&out, "out", "./out", "the path for the generated gifs")
 	flag.StringVar(&manager, "manager", "pnpm", "which node-package manager to use")
-	flag.StringVar(&cmd, "cmd", "dev", "the node-package manager (-manager) command used to run the dev-server")
+	flag.StringVar(&cmd, "cmd", "dev", "the node-package manager (`-manager`) command used to run the dev-server")
 	flag.StringVar(&installCmd, "install", "i", "the package manager install command (like `pnpm i`)")
 	flag.StringVar(&paths, "paths", "/", "the path to screenshot, comma-seperated")
 	flag.IntVar(&port, "port", 5000, "port of app")
@@ -72,7 +72,10 @@ func main() {
 	}
 
 	shooter := shoot.New(verboser)
-	defer git.ChangeCommit(repo, "master")
+	defer func() {
+		git.ChangeCommit(repo, "master")
+		git.ChangeCommit(repo, "main")
+	}()
 
 	pathsSplit := strings.Split(paths, ",")
 	pathRe := regexp.MustCompile(`[^\w+]`)
