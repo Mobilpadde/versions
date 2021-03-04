@@ -32,45 +32,50 @@ Then we have some flags to configure.
 
 Required:
 
- * `-repo` - specifies the path to the repo you'd like to make a verison-lapse of.
+-   `-repo` - specifies the path to the repo you'd like to make a verison-lapse of.
 
 Useful:
 
- * `-dump`
-   * defaults to `./screendumps`, is the directory to dump the screenshots in.
+-   `-dump`
 
- * `-out`
-   * defaults to `./out.gif`, is the path and name to place the generated gif.
+    -   defaults to `./screendumps`, is the directory to dump the screenshots in.
 
- * `-cmd`
-   * defaults to `dev`, is the name of the `package.json`-script to run a `dev-server`.
+-   `-out`
 
- * `-commits`
-   * defaults to `0`, meaning all the commits. 
+    -   defaults to `./out.gif`, is the path and name to place the generated gif.
 
- * `-port`
-   * defaults to `5000`, and will use ports from `5000` to `5000 + N_COMMITS`.
+-   `-cmd`
 
- * `-wait`
-   * defaults to `5`, this will let the program wait for `5` seconds to start the app, `5` seconds to load the page and (always) `1` second to process the screendump.
-   * This adds up to `5 + 5 + 1 = 11` seconds for each commit to process.
-   * Or `55` seconds - about a minute - to run through `5` commits.
+    -   defaults to `dev`, is the name of the `package.json`-script to run a `dev-server`.
+
+-   `-commits`
+
+    -   defaults to `0`, meaning all the commits.
+
+-   `-port`
+
+    -   defaults to `5000`, and will use ports from `5000` to `5000 + N_COMMITS`.
+
+-   `-wait`
+    -   defaults to `5`, this will let the program wait for `5` seconds to start the app, `5` seconds to load the page and (always) `1` second to process the screendump.
+    -   This adds up to `5 + 5 + 1 = 11` seconds for each commit to process.
+    -   Or `55` seconds - about a minute - to run through `5` commits.
 
 Debugging:
 
- * `-v`
-   * defaults to `false`, logs the yarn-commands - useful for figuring out how much the `-wait` should be.
+-   `-v`
 
- * `-vvv`
-   * defaults to `false`, log most things.
+    -   defaults to `false`, logs the pnpm-commands - useful for figuring out how much the `-wait` should be.
 
+-   `-vvv`
+    -   defaults to `false`, log most things.
 
 ## Post Scriptum
 
-Only works with `yarn` at the moment.
+~~Only works with `pnpm` at the moment.~~
 
 If the program crashes at any point, you'd `git checkout master` on the repo specified. The program **will** try to clean up after itself, but might fail at times.
 
 If you by any reason decide to run the program again on the same repo or any other repo, it'll clean the `screendumps`-dir and `out.gif`-file. So, make sure to save whatever you need!
 
-*Thanks!* - Mads Cordes ([@Mobilpadde](https://twitter.com/Mobilpadde "Twitter")).
+_Thanks!_ - Mads Cordes ([@Mobilpadde](https://twitter.com/Mobilpadde "Twitter")).

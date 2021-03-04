@@ -16,10 +16,15 @@ import (
 	"versions/shoot"
 )
 
+func init() {
+	log.SetFlags(log.LstdFlags | log.Llongfile)
+}
+
 func main() {
 	var repo string
 	var dump string
 	var out string
+	var manager string
 	var cmd string
 	var port int
 	var wait int
@@ -30,12 +35,13 @@ func main() {
 	flag.StringVar(&repo, "repo", "", "the path of a git-repo")
 	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
 	flag.StringVar(&out, "out", "./out.gif", "the path of the generated gif")
-	flag.StringVar(&cmd, "cmd", "dev", "the yarn-command used to run the dev-server")
+	flag.StringVar(&manager, "manager", "pnpm", "which node-package manager to use")
+	flag.StringVar(&cmd, "cmd", "dev", "the node-package manager (-manager) command used to run the dev-server")
 	flag.IntVar(&port, "port", 5000, "port of app")
 	flag.IntVar(&wait, "wait", 5, "how long to wait before screendumping")
 	flag.IntVar(&commits, "commits", 0, "how many commits to dump")
 
-	flag.BoolVar(&verbose, "v", false, "log yarn-commands")
+	flag.BoolVar(&verbose, "v", false, "log node-manager-commands")
 	flag.BoolVar(&verboser, "vvv", false, "all the logs")
 
 	flag.Parse()
@@ -83,11 +89,11 @@ func main() {
 		log.Printf("Checking out: [%s]: %s", l.SHA1, l.Title)
 		git.ChangeCommit(repo, l.SHA1)
 
-		d := execute.Command(verbose || verboser, "yarn", repo, []string{})
+		d := execute.Command(verbose || verboser, manager, repo, []string{})
 		d.Run()
 		d.Wait()
 
-		s := execute.Command(verbose || verboser, "yarn", repo, []string{"PORT=" + strconv.Itoa(port)}, cmd)
+		s := execute.Command(verbose || verboser, manager, repo, []string{"PORT=" + strconv.Itoa(port)}, cmd)
 		s.Start()
 
 		time.Sleep(time.Second * time.Duration(wait))

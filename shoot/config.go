@@ -16,7 +16,7 @@ type Shooter struct {
 }
 
 func New(verboser bool) *Shooter {
-	chrome := execute.Command(verboser, "chromium", "", []string{}, "--remote-debugging-port=9222")
+	chrome := execute.Command(verboser, "google-chrome-beta", "", []string{}, "--remote-debugging-port=9222")
 	chrome.Start()
 
 	return &Shooter{
