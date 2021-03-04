@@ -31,7 +31,8 @@ func (s *Shooter) Close() {
 func Shoot(uri, path, sha1 string, wait int) {
 	remote, err := godet.Connect("localhost:9222", false)
 	if err != nil {
-		log.Fatalln(err.Error())
+		log.Println(err)
+		return
 	}
 
 	defer remote.Close()

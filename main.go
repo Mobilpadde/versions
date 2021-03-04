@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -28,7 +29,7 @@ func main() {
 	var manager string
 	var cmd string
 	var installCmd string
-	var path string
+	var paths string
 	var port int
 	var wait int
 	var commits int
@@ -37,11 +38,11 @@ func main() {
 
 	flag.StringVar(&repo, "repo", "", "the path of a git-repo")
 	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
-	flag.StringVar(&out, "out", "./out.gif", "the path of the generated gif")
+	flag.StringVar(&out, "out", "./out", "the path for the generated gifs")
 	flag.StringVar(&manager, "manager", "pnpm", "which node-package manager to use")
 	flag.StringVar(&cmd, "cmd", "dev", "the node-package manager (-manager) command used to run the dev-server")
 	flag.StringVar(&installCmd, "install", "i", "the package manager install command (like `pnpm i`)")
-	flag.StringVar(&path, "path", "/", "the path to screenshot")
+	flag.StringVar(&paths, "paths", "/", "the path to screenshot, comma-seperated")
 	flag.IntVar(&port, "port", 5000, "port of app")
 	flag.IntVar(&wait, "wait", 5, "how long to wait before screendumping")
 	flag.IntVar(&commits, "commits", 0, "how many commits to dump")
@@ -59,23 +60,18 @@ func main() {
 		log.Fatalln(err.Error())
 	}
 
-	// os.RemoveAll(dump)
-	// os.RemoveAll(out)
+	os.RemoveAll(dump)
+	os.RemoveAll(out)
 
 	os.Mkdir(dump, 0777)
+	os.Mkdir(out, 0777)
 
 	logsData := logs.GetLogs(repo)
 	if commits > 0 {
 		logsData = logsData[:commits]
 	}
 
-	gif.DrawAll(dump, path, logsData)
-	gif.Make(dump, out, logsData)
-	os.Exit(0)
-
 	shooter := shoot.New(verboser)
-	defer shooter.Close()
-
 	defer func(port, commits int, logs []logs.Log) {
 		if commits <= 0 {
 			port = port + len(logs)
@@ -85,6 +81,10 @@ func main() {
 	}(port, commits, logsData)
 
 	defer git.ChangeCommit(repo, "master")
+
+	pathsSplit := strings.Split(paths, ",")
+	pathRe := regexp.MustCompile(`[^\w+]`)
+
 	for i, l := range logsData {
 		log.Printf("Checking out: [%s]: %s", l.SHA1, l.Title)
 		git.ChangeCommit(repo, l.SHA1)
@@ -99,7 +99,17 @@ func main() {
 		s.Start()
 
 		time.Sleep(time.Second * time.Duration(wait))
-		shoot.Shoot(fmt.Sprintf("http://localhost:%d%s", port, path), dump, fmt.Sprintf("%d_%s", i, l.SHA1), wait)
+		for _, path := range pathsSplit {
+			if path == "" {
+				continue
+			}
+
+			dumpPath := dump + "/" + pathRe.ReplaceAllString(path, "")
+			os.Mkdir(dumpPath, 0777)
+			time.Sleep(time.Second)
+			shoot.Shoot(fmt.Sprintf("http://localhost:%d%s", port, path), dumpPath, fmt.Sprintf("%d_%s", i, l.SHA1), wait)
+			time.Sleep(time.Second)
+		}
 
 		s.Process.Kill()
 		k := execute.Command(verboser, "make", "./", []string{}, "PORT="+strconv.Itoa(port), "kill")
@@ -109,8 +119,21 @@ func main() {
 		time.Sleep(time.Second * time.Duration(wait))
 	}
 
-	gif.DrawAll(dump, path, logsData)
-	gif.Make(dump, out, logsData)
+	shooter.Close()
+	for _, path := range pathsSplit {
+		if path == "" {
+			continue
+		}
+
+		repPath := pathRe.ReplaceAllString(path, "")
+		dumpPath := dump + "/" + repPath
+		gif.DrawAll(dumpPath, path, logsData)
+
+		if repPath == "" {
+			repPath = "index"
+		}
+		gif.Make(dumpPath, out+"/"+repPath+".git", logsData)
+	}
 }
 
 func exists(path string) error {
