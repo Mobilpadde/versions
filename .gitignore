@@ -3,8 +3,6 @@ out/
 .vscode/
 
 *.gif
-!sample/index.gif
-!sample/out.gif
-
 *.webp
-!sample/index.webp
+
+!sample/*
