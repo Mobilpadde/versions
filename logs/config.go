@@ -3,7 +3,7 @@ package logs
 import (
 	"strings"
 
-	"versions/git"
+	"github.com/Mobilpadde/versions/git"
 )
 
 // Log contains a single git log entry

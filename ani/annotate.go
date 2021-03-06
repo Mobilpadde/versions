@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"versions/logs"
+	"github.com/Mobilpadde/versions/logs"
 
 	"github.com/fogleman/gg"
 )

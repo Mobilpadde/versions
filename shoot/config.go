@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"time"
 
-	"versions/execute"
+	"github.com/Mobilpadde/versions/execute"
 
 	"github.com/raff/godet"
 )

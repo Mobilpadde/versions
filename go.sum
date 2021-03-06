@@ -1,9 +1,3 @@
-github.com/EdlinOrg/prominentcolor v1.0.0 h1:sQNY8Dtsv3PK3J1LbmrDmtlZm9Y9U8Loi1iZIl4YN3Y=
-github.com/EdlinOrg/prominentcolor v1.0.0/go.mod h1:mYmDsxfcmBz6izH/SqtSzfsUiZdPNPpPgUPKCZq70KQ=
-github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89 h1:k8/G7/7+vhkmphbzRSHulomGLxKJnM6Dp5NJ2HePGwY=
-github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89/go.mod h1:xu1tbmzBGes+jcIUU9yATLxmOoxdCZT0hUp5HY1c6/A=
-github.com/andybons/gogif v0.0.0-20140526152223-16d573594812 h1:WBBv0ka2SO7Ut4bpskb87E9cHNnJabqA6VoBTex0Jng=
-github.com/andybons/gogif v0.0.0-20140526152223-16d573594812/go.mod h1:lkVwYUDYv/mJZK69J7BP7HRUhHEAone7OQHFBRnhQdQ=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869/go.mod h1:Ekp36dRnpXw/yCqJaO+ZrUyxD+3VXMFFr56k5XYrpB4=
 github.com/fogleman/gg v1.3.0 h1:/7zJX8F6AaYQc57WQCyN9cAIz+4bCJGO9B+dyW29am8=
@@ -23,14 +17,6 @@ github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfn
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
-github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
-github.com/mccutchen/palettor v0.0.0-20180531165952-566b8754a105 h1:xxbALXvIgRwko7ipSxnUaC41ZPThk9avSWOs8u0XtRU=
-github.com/mccutchen/palettor v0.0.0-20180531165952-566b8754a105/go.mod h1:kRGNOvXoJQs4XyqtpbVJGhoLCrYbZZZBGY6MNnFXS+o=
-github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=
-github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646/go.mod h1:jpp1/29i3P1S/RLdc7JQKbRpFeM1dOBd8T9ki5s+AY8=
-github.com/oliamb/cutter v0.2.2 h1:Lfwkya0HHNU1YLnGv2hTkzHfasrSMkgv4Dn+5rmlk3k=
-github.com/oliamb/cutter v0.2.2/go.mod h1:4BenG2/4GuRBDbVm/OPahDVqbrOemzpPiG5mi1iryBU=
 github.com/raff/godet v0.0.0-20190628174459-0ef2d21884cc h1:iQX9nPQ8inG8CSoIZUSwFU8ekr+k3rZohfa3szH0Dkc=
 github.com/raff/godet v0.0.0-20190628174459-0ef2d21884cc/go.mod h1:7z2HshXnEYBhiFEws0dIy334q8HFK8G5qsFAsmM81LU=
 github.com/sizeofint/webpanimation v0.0.0-20210224203943-b413f9843fe3 h1:0yRDXv5h/QqnqXMfTtgWiHycwLtJpLCAI1VNlH0sCX8=

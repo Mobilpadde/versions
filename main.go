@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"versions/ani"
-	"versions/execute"
-	"versions/git"
-	"versions/logs"
-	"versions/shoot"
+	"github.com/Mobilpadde/versions/ani"
+	"github.com/Mobilpadde/versions/execute"
+	"github.com/Mobilpadde/versions/git"
+	"github.com/Mobilpadde/versions/logs"
+	"github.com/Mobilpadde/versions/shoot"
 )
 
 func init() {

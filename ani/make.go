@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"versions/logs"
+	"github.com/Mobilpadde/versions/logs"
 
 	"github.com/sizeofint/webpanimation"
 )

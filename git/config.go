@@ -3,7 +3,7 @@ package git
 import (
 	"log"
 
-	"versions/execute"
+	"github.com/Mobilpadde/versions/execute"
 )
 
 func GetLogs(path string) string {
