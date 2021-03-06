@@ -141,8 +141,10 @@ func exists(path string) error {
 	if err == nil {
 		return nil
 	}
+
 	if os.IsNotExist(err) {
 		return err
 	}
+
 	return nil
 }
