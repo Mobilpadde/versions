@@ -18,4 +18,4 @@ COPY --from=builder /versions .
 COPY fonts ./fonts/
 
 VOLUME ["/repo", "/out", "/screendumps"]
-ENTRYPOINT ["./versions", "-repo", "/repo", "-out", "/out", "-dump", "/screendumps"]
+CMD ["./versions", "-repo", "/repo", "-out", "/out", "-dump", "/screendumps"]
