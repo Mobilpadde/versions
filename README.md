@@ -107,7 +107,7 @@ Like the CLI, but with volumes for the folders
 ```sh
 docker build -t versions .
 
-docker run -v /home/avl/Work/versions/versions-test:/repo -v /home/avl/Documents/versions/out:/out -v /home/avl/Documents/versions/dumps:/screendumps versions -commits 2 -wait 2 -port 8080 -manager yarn -install "" -v
+docker run -v ../path/to/versions-test:/repo -v ../path/to/out:/out -v ../path/to/dumps:/screendumps versions -commits 2 -wait 2 -port 8080 -manager yarn -install "" -v
 ```
 
 ## Post Scriptum
