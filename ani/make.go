@@ -20,7 +20,7 @@ func Make(dumps, outPath string, logs []logs.Log) {
 	i := ll - 1
 	l := logs[i]
 
-	path := fmt.Sprintf("%s/%d_%s.gif", dumps, i, l.SHA1)
+	path := fmt.Sprintf("%s/%d_%s_annotated.png", dumps, i, l.SHA1)
 	f, err := os.Open(path)
 	if err != nil {
 		log.Println(err)
@@ -49,7 +49,7 @@ func Make(dumps, outPath string, logs []logs.Log) {
 	for i := len(logs) - 2; i >= 0; i-- {
 		l := logs[i]
 
-		path := fmt.Sprintf("%s/%d_%s.gif", dumps, i, l.SHA1)
+		path := fmt.Sprintf("%s/%d_%s_annotated.png", dumps, i, l.SHA1)
 		f, err := os.Open(path)
 		if err != nil {
 			log.Println(err)

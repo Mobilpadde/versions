@@ -61,9 +61,6 @@ func main() {
 		log.Fatalln(err.Error())
 	}
 
-	// os.RemoveAll(dump)
-	// os.RemoveAll(out)
-
 	os.Mkdir(dump, 0777)
 	os.Mkdir(out, 0777)
 
@@ -73,11 +70,9 @@ func main() {
 	}
 
 	shooter := shoot.New(verboser)
-	// shooter.Close()
 	defer func() {
 		log.Println(git.ChangeCommit(repo, "master"))
 		log.Println(git.ChangeCommit(repo, "main"))
-		// git.ChangeCommit(repo, "main")
 	}()
 
 	pathsSplit := strings.Split(paths, ",")

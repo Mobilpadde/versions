@@ -35,7 +35,7 @@ func DrawAll(path, uri string, logs []logs.Log) {
 			uriPath = fmt.Sprintf(" (%s)", uri)
 		}
 		s := fmt.Sprintf("[%s]: %s%s", l.SHA1, l.Title, uriPath)
-		n := 6 // "stroke" size
+		n := 6
 		for dy := -n; dy <= n; dy++ {
 			for dx := -n; dx <= n; dx++ {
 				if dx*dx+dy*dy >= n*n {
@@ -51,6 +51,6 @@ func DrawAll(path, uri string, logs []logs.Log) {
 		dc.SetRGB(1, 1, 1)
 		dc.DrawStringAnchored(s, pos, pos, 0, 1)
 
-		dc.SavePNG(path + ".gif")
+		dc.SavePNG(path + "_annotated.png")
 	}
 }
