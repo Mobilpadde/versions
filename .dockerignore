@@ -1,0 +1,9 @@
+.git/
+out/
+screendumps/
+sample/
+
+LICENSE
+README.md
+.editorconfig
+.gitignore

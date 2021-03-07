@@ -2,6 +2,16 @@ module github.com/Mobilpadde/versions
 
 go 1.12
 
+replace github.com/Mobilpadde/versions/ani => ./ani
+
+replace github.com/Mobilpadde/versions/execute => ./execute
+
+replace github.com/Mobilpadde/versions/git => ./git
+
+replace github.com/Mobilpadde/versions/logs => ./logs
+
+replace github.com/Mobilpadde/versions/shoot => ./shoot
+
 require (
 	github.com/Mobilpadde/versions/ani v0.0.0-20210306185700-7c7e1772401c
 	github.com/Mobilpadde/versions/execute v0.0.0-20210306185700-7c7e1772401c

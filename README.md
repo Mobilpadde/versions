@@ -34,7 +34,9 @@ It's quite simple to use. I promise! Download the source-code of this repo. Fire
 
 ## Usage
 
-First, have a `google-chrome-beta`-browser installed. (or cahnge the source code to specify another version of a chromium-based browser [here](shoot/config.go#L19))
+### CLI
+
+First, have a `chromium-browser` installed. (or cahnge the source code to specify another version of a chromium-based browser [here](shoot/config.go#L21))
 
 Second, and most importantly, have `go >= 1.11` installed - As I'm not yet providing native builds of this program.
 
@@ -97,6 +99,16 @@ Debugging:
 
 -   `-vvv`
     -   defaults to `false`, log most things.
+
+### Docker
+
+Like the CLI, but with volumes for the folders
+
+```sh
+docker build -t versions .
+
+docker run -v /home/avl/Work/versions/versions-test:/repo -v /home/avl/Documents/versions/out:/out -v /home/avl/Documents/versions/dumps:/screendumps versions -commits 2 -wait 2 -port 8080 -manager yarn -install "" -v
+```
 
 ## Post Scriptum
 

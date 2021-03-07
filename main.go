@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -38,7 +39,7 @@ func main() {
 
 	flag.StringVar(&repo, "repo", "", "the path of a git-repo")
 	flag.StringVar(&dump, "dump", "./screendumps", "the path the screendumps-dir")
-	flag.StringVar(&out, "out", "./out", "the path for the generated gifs")
+	flag.StringVar(&out, "out", "./out", "the path for the generated .webp's")
 	flag.StringVar(&manager, "manager", "pnpm", "which node-package manager to use")
 	flag.StringVar(&cmd, "cmd", "dev", "the node-package manager (`-manager`) command used to run the dev-server")
 	flag.StringVar(&installCmd, "install", "i", "the package manager install command (like `pnpm i`)")
@@ -72,6 +73,7 @@ func main() {
 	}
 
 	shooter := shoot.New(verboser)
+	// shooter.Close()
 	defer func() {
 		log.Println(git.ChangeCommit(repo, "master"))
 		log.Println(git.ChangeCommit(repo, "main"))
@@ -81,7 +83,15 @@ func main() {
 	pathsSplit := strings.Split(paths, ",")
 	pathRe := regexp.MustCompile(`[^\w+]`)
 
-	execute.Command(verboser, "make", "./", []string{}, "PORT="+strconv.Itoa(port), "kill").Run()
+	d := exec.Command("lsof", "-t", "-i:"+strconv.Itoa(port))
+	b, _ := d.Output()
+	d.Run()
+
+	pID := string(b)
+	if pID != "" {
+		execute.Command(verboser, "kill", "./", []string{}, "", pID).Run()
+	}
+
 	for i, l := range logsData {
 		log.Printf("Checking out: [%s]: %s", l.SHA1, l.Title)
 		git.ChangeCommit(repo, l.SHA1)
@@ -112,8 +122,15 @@ func main() {
 
 		for i := 0; i < 2; i++ {
 			time.Sleep(time.Second)
-			k := execute.Command(verboser, "make", "./", []string{}, "PORT="+strconv.Itoa(port), "kill")
-			k.Run()
+
+			d := exec.Command("lsof", "-t", "-i:"+strconv.Itoa(port))
+			b, _ := d.Output()
+			d.Run()
+
+			pID := string(b)
+			if pID != "" {
+				execute.Command(verboser, "kill", "./", []string{}, "", pID).Run()
+			}
 		}
 
 		time.Sleep(time.Second)
