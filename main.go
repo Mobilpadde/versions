@@ -78,15 +78,6 @@ func main() {
 	pathsSplit := strings.Split(paths, ",")
 	pathRe := regexp.MustCompile(`[^\w+]`)
 
-	d := exec.Command("lsof", "-t", "-i:"+strconv.Itoa(port))
-	b, _ := d.Output()
-	d.Run()
-
-	pID := string(b)
-	if pID != "" {
-		execute.Command(verboser, "kill", "./", []string{}, "", pID).Run()
-	}
-
 	for i, l := range logsData {
 		log.Printf("Checking out: [%s]: %s", l.SHA1, l.Title)
 		git.ChangeCommit(repo, l.SHA1)
@@ -112,23 +103,24 @@ func main() {
 			time.Sleep(time.Second)
 		}
 
-		s.Process.Kill()
-		s.Wait()
-
 		for i := 0; i < 2; i++ {
-			time.Sleep(time.Second)
+			time.Sleep(time.Millisecond * 250)
 
-			d := exec.Command("lsof", "-t", "-i:"+strconv.Itoa(port))
-			b, _ := d.Output()
-			d.Run()
+			if s.Process != nil {
+				s.Process.Kill()
 
-			pID := string(b)
-			if pID != "" {
-				execute.Command(verboser, "kill", "./", []string{}, "", pID).Run()
+				d := exec.Command("lsof", "-t", "-i:"+strconv.Itoa(port))
+				b, _ := d.Output()
+				d.Run()
+
+				pID := string(b)
+				if pID != "" {
+					exec.Command("kill", pID).Run()
+				}
 			}
 		}
 
-		time.Sleep(time.Second)
+		time.Sleep(time.Millisecond * 250)
 	}
 	shooter.Close()
 
