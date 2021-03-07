@@ -61,8 +61,8 @@ func main() {
 		log.Fatalln(err.Error())
 	}
 
-	os.RemoveAll(dump)
-	os.RemoveAll(out)
+	// os.RemoveAll(dump)
+	// os.RemoveAll(out)
 
 	os.Mkdir(dump, 0777)
 	os.Mkdir(out, 0777)
