@@ -102,7 +102,9 @@ Debugging:
 
 ### Docker
 
-Like the CLI, but with volumes for the folders
+Like the CLI, but with volumes for the folders.
+
+> Tip: Use [earthly](https://earthly.dev/) to build the docker image.
 
 ```sh
 # docker build -t versions .
