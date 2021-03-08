@@ -65,6 +65,7 @@ func main() {
 	os.Mkdir(out, 0777)
 
 	logsData := logs.GetLogs(repo)
+
 	if commits > 0 {
 		logsData = logsData[:commits]
 	}

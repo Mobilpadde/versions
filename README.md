@@ -105,7 +105,8 @@ Debugging:
 Like the CLI, but with volumes for the folders
 
 ```sh
-docker build -t versions .
+# docker build -t versions .
+earthly +versions
 
 docker run -v /abs/path/to/versions-test:/repo -v /abs/path/to/out:/out -v /abs/path/to/dumps:/screendumps versions -repo /repo -out /out -dump /screendumps -commits 2 -wait 2 -port 8080 -manager yarn -install "" -v
 ```
